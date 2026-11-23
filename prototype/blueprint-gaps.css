@@ -1,0 +1,785 @@
+/* ==========================================================================
+   NusaPOS Retail — Prototype Fitur Lanjutan Blueprint (HTML & CSS Only)
+   Solid flat colors only (no gradients)
+   ========================================================================== */
+
+:root {
+  --bg-app: #f3f5f8;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f8fafc;
+  --bg-sidebar: #0f172a;
+  --bg-sidebar-hover: #1e293b;
+
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  --primary: #0d9488;
+  --primary-hover: #0f766e;
+  --primary-soft: #ccfbf1;
+  --primary-tint: #f0fdfa;
+
+  --success: #15803d;
+  --success-bg: #dcfce7;
+  --warning: #b45309;
+  --warning-bg: #fef3c7;
+  --danger: #dc2626;
+  --danger-bg: #fee2e2;
+  --info: #1d4ed8;
+  --info-bg: #dbeafe;
+
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--text-primary);
+  background: var(--bg-app);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.sr-toggle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+/* ==========================================================================
+   Shell Layout (Sidebar + Topbar + Main + Footer)
+   ========================================================================== */
+.shell {
+  display: grid;
+  grid-template-columns: 244px 1fr;
+  grid-template-rows: 62px 1fr 38px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  grid-row: 1 / -1;
+  background: var(--bg-sidebar);
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 15px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.brand-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.brand-text span {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #64748b;
+  padding: 0 8px;
+  margin-bottom: 6px;
+}
+
+.nav-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.nav-tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 11px;
+  border-radius: 9px;
+  color: #cbd5e1;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  user-select: none;
+}
+
+.nav-tab:hover {
+  background: var(--bg-sidebar-hover);
+  color: #ffffff;
+}
+
+.nav-tab .tab-num {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.18);
+  color: #cbd5e1;
+}
+
+.sidebar-back {
+  display: block;
+  text-align: center;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sidebar-back:hover {
+  background: var(--bg-sidebar-hover);
+  color: #ffffff;
+}
+
+/* Pure CSS Active Tab Highlight */
+#tab-pos:checked ~ .shell .sidebar label[for='tab-pos'],
+#tab-refund:checked ~ .shell .sidebar label[for='tab-refund'],
+#tab-po:checked ~ .shell .sidebar label[for='tab-po'],
+#tab-barcode:checked ~ .shell .sidebar label[for='tab-barcode'],
+#tab-report:checked ~ .shell .sidebar label[for='tab-report'],
+#tab-master:checked ~ .shell .sidebar label[for='tab-master'] {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+#tab-pos:checked ~ .shell .sidebar label[for='tab-pos'] .tab-num,
+#tab-refund:checked ~ .shell .sidebar label[for='tab-refund'] .tab-num,
+#tab-po:checked ~ .shell .sidebar label[for='tab-po'] .tab-num,
+#tab-barcode:checked ~ .shell .sidebar label[for='tab-barcode'] .tab-num,
+#tab-report:checked ~ .shell .sidebar label[for='tab-report'] .tab-num,
+#tab-master:checked ~ .shell .sidebar label[for='tab-master'] .tab-num {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+/* Pure CSS Panel Visibility */
+.panel {
+  display: none;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#tab-pos:checked ~ .shell .main-scroll .panel-pos,
+#tab-refund:checked ~ .shell .main-scroll .panel-refund,
+#tab-po:checked ~ .shell .main-scroll .panel-po,
+#tab-barcode:checked ~ .shell .main-scroll .panel-barcode,
+#tab-report:checked ~ .shell .main-scroll .panel-report,
+#tab-master:checked ~ .shell .main-scroll .panel-master {
+  display: flex;
+}
+
+/* Topbar */
+.topbar {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.topbar-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar-title h1 {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+}
+
+.pill--teal {
+  background: var(--primary-tint);
+  border-color: var(--primary-soft);
+  color: var(--primary-hover);
+}
+
+.pill--success {
+  background: var(--success-bg);
+  border-color: #bbf7d0;
+  color: var(--success);
+}
+
+.pill--warning {
+  background: var(--warning-bg);
+  border-color: #fde68a;
+  color: var(--warning);
+}
+
+.pill--danger {
+  background: var(--danger-bg);
+  border-color: #fecaca;
+  color: var(--danger);
+}
+
+/* Main Scrollable Body */
+.main-scroll {
+  overflow-y: auto;
+  padding: 20px 22px;
+}
+
+/* Footer */
+.footer {
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border);
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Reusable Cards, Grids, Tables, Forms, Buttons (Solid Colors Only)
+   ========================================================================== */
+.panel-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.panel-head h2 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.panel-head p {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.card-head {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-head h3 {
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.grid-2-asym {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 16px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--bg-subtle);
+}
+
+.btn--primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn--danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+.btn--sm {
+  height: 30px;
+  padding: 0 10px;
+  font-size: 11.5px;
+}
+
+.input,
+.select {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-surface);
+  font-size: 12.5px;
+  outline: none;
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--primary);
+}
+
+.input--sm,
+.select--sm {
+  height: 30px;
+  padding: 0 8px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+table.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+table.tbl th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-secondary);
+}
+
+table.tbl td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+table.tbl tr:last-child td {
+  border-bottom: none;
+}
+
+table.tbl tbody tr {
+  cursor: pointer;
+  transition: background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+table.tbl tbody tr:hover {
+  background-color: #f0fdfa;
+  box-shadow: inset 3px 0 0 #14b8a6;
+}
+
+table.tbl tbody tr:active,
+table.tbl tbody tr:focus-within {
+  background-color: #ccfbf1;
+  box-shadow: inset 4px 0 0 #0d9488;
+}
+
+.right {
+  text-align: right !important;
+}
+
+.alert {
+  padding: 10px 13px;
+  border-radius: 8px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+}
+
+.alert--info {
+  background: var(--primary-tint);
+  border-color: var(--primary-soft);
+  color: var(--primary-hover);
+}
+
+.alert--danger {
+  background: var(--danger-bg);
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+/* ==========================================================================
+   Feature-Specific Styles
+   ========================================================================== */
+
+/* 1. Kasir Cart Item with Unit Switcher & Manual Item Discount */
+.cart-row-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--bg-surface);
+}
+
+.cart-row-controls {
+  display: grid;
+  grid-template-columns: 1.2fr 1.2fr 90px 110px;
+  gap: 8px;
+  align-items: end;
+}
+
+.disc-inline {
+  display: flex;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  overflow: hidden;
+  height: 30px;
+}
+
+.disc-inline input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  outline: none;
+}
+
+.disc-inline span {
+  display: grid;
+  place-items: center;
+  padding: 0 8px;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* 4. Import Dropzone & Barcode Label Sheet */
+.dropzone {
+  border: 2px dashed var(--border-strong);
+  border-radius: 12px;
+  padding: 22px;
+  text-align: center;
+  background: var(--bg-subtle);
+}
+
+.barcode-sheet {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  background: var(--bg-subtle);
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.barcode-sticker {
+  background: #ffffff;
+  border: 1px dashed #94a3b8;
+  border-radius: 6px;
+  padding: 10px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.barcode-sticker .st-name {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barcode-bars {
+  height: 34px;
+  margin: 2px 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    #0f172a 0px,
+    #0f172a 2px,
+    #ffffff 2px,
+    #ffffff 4px,
+    #0f172a 4px,
+    #0f172a 5px,
+    #ffffff 5px,
+    #ffffff 8px,
+    #0f172a 8px,
+    #0f172a 11px,
+    #ffffff 11px,
+    #ffffff 13px
+  );
+}
+
+.barcode-sticker .st-code {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.barcode-sticker .st-price {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+/* 5. Pure CSS Bar Chart (Solid Colors) */
+.chart-wrap {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  align-items: end;
+  height: 210px;
+  padding: 18px 12px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chart-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 155px;
+}
+
+.bar {
+  width: 22px;
+  border-radius: 5px 5px 0 0;
+  position: relative;
+}
+
+.bar--sales {
+  background: var(--primary);
+}
+
+.bar--profit {
+  background: #0f172a;
+}
+
+.chart-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.chart-legend {
+  display: flex;
+  gap: 16px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+/* Pagination Bar */
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  background: var(--bg-subtle);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.page-btns {
+  display: flex;
+  gap: 5px;
+}
+
+.page-btn {
+  min-width: 30px;
+  height: 30px;
+  padding: 0 9px;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: #ffffff;
+  font-size: 11.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.page-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+.page-btn.disabled {
+  background: #f1f5f9;
+  border-color: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* Toggle Switch (Pure CSS) */
+.status-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+@media (max-width: 1024px) {
+  .shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 62px 1fr 38px;
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .sidebar {
+    grid-row: auto;
+  }
+
+  .grid-2,
+  .grid-2-asym,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-row-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+}

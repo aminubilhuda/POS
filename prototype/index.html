@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NusaPOS Retail — Kasir (POS) Multi-Cabang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Pure CSS Modal Toggles -->
+  <input type="checkbox" id="modal-receipt" class="sr-toggle" />
+  <input type="checkbox" id="modal-hold" class="sr-toggle" />
+  <input type="checkbox" id="modal-void" class="sr-toggle" />
+  <input type="checkbox" id="modal-shift" class="sr-toggle" />
+
+  <div class="app-shell">
+    <!-- ================================================================
+         SIDEBAR NAVIGATION (Modul Paket B)
+         ================================================================ -->
+    <aside class="sidebar" aria-label="Navigasi Utama">
+      <div class="brand-mark" title="NusaPOS Retail">NP</div>
+
+      <nav class="nav-list">
+        <a href="#kasir" class="nav-item active" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="14" rx="2" />
+            <path d="M8 20h8M12 18v2M6 8h4M6 12h2M14 8h4v4h-4z" />
+          </svg>
+          <span>Kasir</span>
+        </a>
+
+        <a href="#produk" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+            <path d="m3.3 7 8.7 5 8.7-5M12 22V12" />
+          </svg>
+          <span>Produk</span>
+        </a>
+
+        <a href="#inventori" class="nav-item" title="3 produk stok menipis">
+          <span class="nav-badge">3</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9h18v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" />
+            <path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4M9 14h6" />
+          </svg>
+          <span>Inventori</span>
+        </a>
+
+        <a href="#pembelian" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 17h4V5H2v12h3" />
+            <path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5v8h1" />
+            <circle cx="7.5" cy="17.5" r="2.5" />
+            <circle cx="17.5" cy="17.5" r="2.5" />
+          </svg>
+          <span>Pembelian</span>
+        </a>
+
+        <a href="#laporan" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18" />
+            <path d="m19 9-5 5-4-4-3 3" />
+          </svg>
+          <span>Laporan</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#pengaturan" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+          </svg>
+          <span>Setelan</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- ================================================================
+         TOP UTILITY BAR (Multi-Cabang, Shift, QZ Tray 58mm, Kasir)
+         ================================================================ -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="app-title-group">
+          <div class="app-title">
+            NusaPOS Retail
+            <span class="version-tag">Paket B</span>
+          </div>
+          <span class="app-subtitle">Terminal Kasir · 23 Nov 2026</span>
+        </div>
+
+        <div class="branch-selector" title="Cakupan data dibatasi per cabang (BranchScope)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4M9 9v.01M9 12v.01M9 15v.01" />
+          </svg>
+          <select aria-label="Pilih Cabang">
+            <option value="CAB01" selected>CAB01 — Pusat Jakarta</option>
+            <option value="CAB02">CAB02 — Bandung Dago</option>
+            <option value="CAB03">CAB03 — Surabaya Barat</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <label for="modal-shift" class="status-pill status-pill--success status-pill--clickable" title="Klik untuk lihat ringkasan & tutup shift">
+          <span class="status-dot status-dot--pulse"></span>
+          <span>Shift #04 · Aktif</span>
+        </label>
+
+        <div class="status-pill status-pill--success status-pill--hide-md" title="QZ Tray WebSocket terhubung ke printer thermal 58mm & cash drawer RJ11">
+          <span class="status-dot"></span>
+          <span>QZ Tray 58mm</span>
+        </div>
+
+        <label for="modal-hold" class="status-pill status-pill--warning status-pill--clickable" title="Lihat transaksi yang ditahan (Hold)">
+          <span>Hold (2)</span>
+        </label>
+
+        <div class="user-chip">
+          <div class="user-avatar">BS</div>
+          <div class="user-meta">
+            <span class="user-name">Budi Santoso</span>
+            <span class="user-role">Kasir · CAB01</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================================================================
+         MAIN POS WORKSPACE
+         ================================================================ -->
+    <main class="pos-workspace">
+      <!-- LEFT PANE: BARCODE SCANNER, CATEGORIES, PRODUCT CATALOG -->
+      <section class="catalog-pane" aria-label="Katalog Produk">
+        <!-- Pure CSS Category Radio Inputs -->
+        <input type="radio" name="category" id="cat-all" class="sr-toggle" checked />
+        <input type="radio" name="category" id="cat-minuman" class="sr-toggle" />
+        <input type="radio" name="category" id="cat-makanan" class="sr-toggle" />
+        <input type="radio" name="category" id="cat-sembako" class="sr-toggle" />
+        <input type="radio" name="category" id="cat-kebersihan" class="sr-toggle" />
+        <input type="radio" name="category" id="cat-bundling" class="sr-toggle" />
+
+        <!-- Barcode Search & Quick Actions -->
+        <div class="search-bar-wrap">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 5v14M7 5v14M11 5v14M15 5v14M19 5v14M21 5v14" />
+            </svg>
+            <input
+              type="search"
+              placeholder="Scan barcode atau ketik nama / SKU produk..."
+              aria-label="Scan barcode atau cari produk"
+              autofocus
+            />
+            <span class="kbd-hint">Scanner Siap · F2</span>
+          </div>
+
+          <label for="modal-receipt" class="quick-btn" title="Cetak ulang struk terakhir lewat QZ Tray">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9" />
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+              <rect x="6" y="14" width="12" height="8" />
+            </svg>
+            <span>Cetak Ulang</span>
+          </label>
+
+          <label for="modal-void" class="quick-btn" title="Void atau Refund transaksi (Butuh PIN Admin)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <span>Void / Refund</span>
+          </label>
+        </div>
+
+        <!-- Category Filter Pills (Pure CSS Interactive) -->
+        <div class="category-bar">
+          <div class="category-tabs" role="tablist" aria-label="Kategori Produk">
+            <label for="cat-all" class="cat-pill">
+              Semua <span class="cat-count num">12</span>
+            </label>
+            <label for="cat-sembako" class="cat-pill">
+              Sembako <span class="cat-count num">3</span>
+            </label>
+            <label for="cat-minuman" class="cat-pill">
+              Minuman <span class="cat-count num">3</span>
+            </label>
+            <label for="cat-makanan" class="cat-pill">
+              Makanan <span class="cat-count num">2</span>
+            </label>
+            <label for="cat-kebersihan" class="cat-pill">
+              Kebersihan <span class="cat-count num">2</span>
+            </label>
+            <label for="cat-bundling" class="cat-pill">
+              Bundling / Paket <span class="cat-count num">2</span>
+            </label>
+          </div>
+          <span class="catalog-meta">Stok real-time <strong>CAB01</strong></span>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="product-grid-scroll">
+          <div class="product-grid">
+            <!-- Product 1 (In Cart) -->
+            <article class="product-card product-card--in-cart" data-cat="sembako">
+              <div class="product-top">
+                <div class="product-thumb thumb-amber">BR</div>
+                <span class="stock-badge num">Stok: 32 sak</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899100210011 · BR-5KG</span>
+                <h3 class="product-name">Beras Pandan Wangi Premium</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">Varian: 5 kg</span>
+                  <span class="mini-tag">1 sak</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 74.000</div>
+                  <div class="product-unit">/ sak</div>
+                </div>
+                <span class="cart-qty-pill num">1 di keranjang</span>
+              </div>
+            </article>
+
+            <!-- Product 2 (In Cart + Promo) -->
+            <article class="product-card product-card--in-cart" data-cat="sembako">
+              <div class="product-top">
+                <div class="product-thumb thumb-amber">MG</div>
+                <span class="stock-badge num">Stok: 45 pcs</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899276113402 · MG-2L</span>
+                <h3 class="product-name">Minyak Goreng Sawit Refill</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">Varian: 2 Liter</span>
+                  <span class="mini-tag mini-tag--promo">Diskon -Rp 1.000</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 34.000</div>
+                  <div class="product-unit">/ pouch</div>
+                </div>
+                <span class="cart-qty-pill num">2 di keranjang</span>
+              </div>
+            </article>
+
+            <!-- Product 3 (In Cart + Multi-unit) -->
+            <article class="product-card product-card--in-cart" data-cat="minuman">
+              <div class="product-top">
+                <div class="product-thumb thumb-blue">AM</div>
+                <span class="stock-badge num">Stok: 18 dus</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899600130024 · AM-DUS</span>
+                <h3 class="product-name">Air Mineral Pegunungan 600ml</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">Dus (24 pcs)</span>
+                  <span class="mini-tag">Satuan bertingkat</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 48.000</div>
+                  <div class="product-unit">/ dus</div>
+                </div>
+                <span class="cart-qty-pill num">1 di keranjang</span>
+              </div>
+            </article>
+
+            <!-- Product 4 (Low Stock Warning) -->
+            <article class="product-card" data-cat="sembako">
+              <div class="product-top">
+                <div class="product-thumb thumb-amber">GP</div>
+                <span class="stock-badge stock-badge--low num">Menipis: 4</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899100210455 · GP-1KG</span>
+                <h3 class="product-name">Gula Pasir Kristal Putih</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">Varian: 1 kg</span>
+                  <span class="mini-tag">Min. stok 10</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 17.500</div>
+                  <div class="product-unit">/ pack</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Product 5 -->
+            <article class="product-card" data-cat="minuman">
+              <div class="product-top">
+                <div class="product-thumb thumb-teal">TM</div>
+                <span class="stock-badge num">Stok: 112 pcs</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899274500118 · TM-350</span>
+                <h3 class="product-name">Teh Melati Botol Dingin</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">350 ml</span>
+                  <span class="mini-tag">pcs / lusin</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 4.500</div>
+                  <div class="product-unit">/ pcs</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Product 6 -->
+            <article class="product-card" data-cat="minuman">
+              <div class="product-top">
+                <div class="product-thumb thumb-blue">SU</div>
+                <span class="stock-badge num">Stok: 54 pcs</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899280210901 · SU-1L</span>
+                <h3 class="product-name">Susu UHT Full Cream</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">Varian: 1 Liter</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 19.500</div>
+                  <div class="product-unit">/ kotak</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Product 7 -->
+            <article class="product-card" data-cat="makanan">
+              <div class="product-top">
+                <div class="product-thumb thumb-rose">MI</div>
+                <span class="stock-badge num">Stok: 240 pcs</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899086855501 · MI-GRG</span>
+                <h3 class="product-name">Mi Instan Goreng Original</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">85 g</span>
+                  <span class="mini-tag">pcs / dus (40)</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 3.200</div>
+                  <div class="product-unit">/ pcs</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Product 8 (Low Stock) -->
+            <article class="product-card" data-cat="makanan">
+              <div class="product-top">
+                <div class="product-thumb thumb-rose">BK</div>
+                <span class="stock-badge stock-badge--low num">Menipis: 3</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899277521008 · BK-CKL</span>
+                <h3 class="product-name">Biskuit Wafer Cokelat Kaleng</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">Varian: 280 g</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 28.500</div>
+                  <div class="product-unit">/ kaleng</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Product 9 -->
+            <article class="product-card" data-cat="kebersihan">
+              <div class="product-top">
+                <div class="product-thumb thumb-emerald">DT</div>
+                <span class="stock-badge num">Stok: 29 pcs</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899999904412 · DT-800</span>
+                <h3 class="product-name">Detergen Cair Konsentrat</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">800 ml · Fresh</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 21.000</div>
+                  <div class="product-unit">/ pouch</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Product 10 (Out of stock) -->
+            <article class="product-card product-card--out" data-cat="kebersihan" aria-disabled="true">
+              <div class="product-top">
+                <div class="product-thumb thumb-emerald">SB</div>
+                <span class="stock-badge stock-badge--out">Habis: 0</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">899999907105 · SB-450</span>
+                <h3 class="product-name">Sabun Mandi Cair Antibakteri</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">450 ml · Refill</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 24.500</div>
+                  <div class="product-unit">/ pouch</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Product 11 (Bundling) -->
+            <article class="product-card" data-cat="bundling">
+              <div class="product-top">
+                <div class="product-thumb thumb-violet">PK</div>
+                <span class="stock-badge stock-badge--bundle">Bundling</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">BND-SMB-001</span>
+                <h3 class="product-name">Paket Sembako Hemat Keluarga</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">Beras 5kg + Minyak 2L + Gula 1kg</span>
+                  <span class="mini-tag mini-tag--promo">Hemat Rp 6.500</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 119.000</div>
+                  <div class="product-unit">/ paket</div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Product 12 (Bundling) -->
+            <article class="product-card" data-cat="bundling">
+              <div class="product-top">
+                <div class="product-thumb thumb-violet">PK</div>
+                <span class="stock-badge stock-badge--bundle">Bundling</span>
+              </div>
+              <div class="product-info">
+                <span class="product-sku mono">BND-SNK-002</span>
+                <h3 class="product-name">Paket Ngopi &amp; Wafer Sore</h3>
+                <div class="product-tags">
+                  <span class="mini-tag">2 Teh Botol + 1 Wafer Kaleng</span>
+                </div>
+              </div>
+              <div class="product-bottom">
+                <div>
+                  <div class="product-price num">Rp 35.000</div>
+                  <div class="product-unit">/ paket</div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Keyboard Shortcuts Footer -->
+        <div class="shortcut-bar" aria-label="Pintasan Keyboard Kasir">
+          <div class="shortcut-list">
+            <span class="shortcut-item"><kbd>F2</kbd> Scan / Cari</span>
+            <span class="shortcut-item"><kbd>F4</kbd> Hold Transaksi</span>
+            <span class="shortcut-item"><kbd>F8</kbd> Diskon</span>
+            <span class="shortcut-item"><kbd>F9</kbd> Bayar &amp; Cetak</span>
+          </div>
+          <span class="mono">UUID: 9c4f2e8a-7b1d</span>
+        </div>
+      </section>
+
+      <!-- RIGHT PANE: ACTIVE CART & CHECKOUT -->
+      <aside class="cart-pane" aria-label="Keranjang Transaksi">
+        <div class="cart-header">
+          <div class="cart-header-top">
+            <div class="invoice-block">
+              <span class="invoice-label">Nomor Struk Aktif</span>
+              <span class="invoice-no mono">INV/CAB01/20261123/0018</span>
+            </div>
+            <div class="cart-header-actions">
+              <label for="modal-hold" class="icon-btn" title="Tahan transaksi ini">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="6" y="4" width="4" height="16" />
+                  <rect x="14" y="4" width="4" height="16" />
+                </svg>
+                <span>Hold</span>
+              </label>
+              <button type="button" class="icon-btn icon-btn--danger" title="Kosongkan keranjang">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="customer-bar">
+            <div class="customer-info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              <span><strong>Pelanggan Umum</strong> <span class="customer-opt">(Opsional)</span></span>
+            </div>
+            <button type="button" class="link-btn">Pilih Pelanggan</button>
+          </div>
+        </div>
+
+        <!-- Cart Item List -->
+        <div class="cart-items">
+          <!-- Cart Item 1 -->
+          <div class="cart-item">
+            <div class="cart-item-top">
+              <div>
+                <div class="cart-item-title">Beras Pandan Wangi Premium (5 kg)</div>
+                <div class="cart-item-meta num">
+                  <span>Rp 74.000 / sak</span>
+                </div>
+              </div>
+              <button type="button" class="cart-item-remove" aria-label="Hapus item">&times;</button>
+            </div>
+            <div class="cart-item-bottom">
+              <div class="qty-stepper" aria-label="Jumlah">
+                <button type="button" class="qty-btn">−</button>
+                <span class="qty-val num">1</span>
+                <button type="button" class="qty-btn">+</button>
+              </div>
+              <div class="cart-item-subtotal num">
+                <span class="price-final">Rp 74.000</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cart Item 2 (with per-item discount) -->
+          <div class="cart-item">
+            <div class="cart-item-top">
+              <div>
+                <div class="cart-item-title">Minyak Goreng Sawit Refill (2 Liter)</div>
+                <div class="cart-item-meta num">
+                  <span>Rp 34.000 / pouch</span>
+                  <span class="item-disc-badge">Diskon -Rp 2.000</span>
+                </div>
+              </div>
+              <button type="button" class="cart-item-remove" aria-label="Hapus item">&times;</button>
+            </div>
+            <div class="cart-item-bottom">
+              <div class="qty-stepper" aria-label="Jumlah">
+                <button type="button" class="qty-btn">−</button>
+                <span class="qty-val num">2</span>
+                <button type="button" class="qty-btn">+</button>
+              </div>
+              <div class="cart-item-subtotal num">
+                <span class="price-strike">Rp 68.000</span>
+                <span class="price-final">Rp 66.000</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cart Item 3 (multi-unit dus) -->
+          <div class="cart-item">
+            <div class="cart-item-top">
+              <div>
+                <div class="cart-item-title">Air Mineral Pegunungan 600ml</div>
+                <div class="cart-item-meta num">
+                  <span>Rp 48.000 / dus (24 pcs)</span>
+                </div>
+              </div>
+              <button type="button" class="cart-item-remove" aria-label="Hapus item">&times;</button>
+            </div>
+            <div class="cart-item-bottom">
+              <div class="qty-stepper" aria-label="Jumlah">
+                <button type="button" class="qty-btn">−</button>
+                <span class="qty-val num">1</span>
+                <button type="button" class="qty-btn">+</button>
+              </div>
+              <div class="cart-item-subtotal num">
+                <span class="price-final">Rp 48.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart Summary & Payment Footer -->
+        <div class="cart-footer">
+          <!-- Transaction-level Discount -->
+          <div class="discount-row">
+            <input type="radio" name="disc-type" id="disc-rp" class="sr-toggle" checked />
+            <input type="radio" name="disc-type" id="disc-pct" class="sr-toggle" />
+            <label class="disc-label" for="trx-discount">Diskon Transaksi</label>
+            <div class="disc-input-group">
+              <input id="trx-discount" type="text" value="8.000" class="num" aria-label="Nominal diskon transaksi" />
+              <div class="disc-type-toggle">
+                <label for="disc-rp">Rp</label>
+                <label for="disc-pct">%</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculation Lines -->
+          <div class="summary-lines num">
+            <div class="summary-row">
+              <span>Subtotal (4 item)</span>
+              <span>Rp 190.000</span>
+            </div>
+            <div class="summary-row summary-row--discount">
+              <span>Total Diskon (Item + Transaksi)</span>
+              <span>−Rp 10.000</span>
+            </div>
+            <div class="summary-row">
+              <span>PPN (11%)</span>
+              <span>Rp 19.800</span>
+            </div>
+            <div class="summary-total">
+              <span class="total-label">Total Tagihan</span>
+              <span class="total-amount">Rp 199.800</span>
+            </div>
+          </div>
+
+          <!-- Payment Methods (Tunai aktif; QRIS & E-Wallet siap Paket C) -->
+          <input type="radio" name="payment" id="pay-cash" class="sr-toggle" checked />
+          <input type="radio" name="payment" id="pay-qris" class="sr-toggle" />
+          <input type="radio" name="payment" id="pay-ewallet" class="sr-toggle" />
+
+          <div class="payment-methods" role="radiogroup" aria-label="Metode Pembayaran">
+            <label for="pay-cash" class="pay-option">
+              <span class="pay-title">Tunai</span>
+              <span class="pay-sub">Buka Laci</span>
+            </label>
+            <label for="pay-qris" class="pay-option">
+              <span class="pay-title">QRIS</span>
+              <span class="pay-sub">Paket C</span>
+            </label>
+            <label for="pay-ewallet" class="pay-option">
+              <span class="pay-title">E-Wallet</span>
+              <span class="pay-sub">Paket C</span>
+            </label>
+          </div>
+
+          <!-- Cash Tendered & Change -->
+          <div class="cash-panel">
+            <div class="cash-input-row">
+              <label class="cash-field">
+                <span>Uang Diterima (Rp)</span>
+                <input type="text" value="200.000" class="num" />
+              </label>
+              <div class="cash-field cash-field--change">
+                <span>Kembalian</span>
+                <strong class="num">Rp 200</strong>
+              </div>
+            </div>
+
+            <div class="denom-chips num">
+              <button type="button" class="denom-chip">Uang Pas</button>
+              <button type="button" class="denom-chip">Rp 200.000</button>
+              <button type="button" class="denom-chip">Rp 250.000</button>
+              <button type="button" class="denom-chip">Rp 300.000</button>
+            </div>
+          </div>
+
+          <!-- Primary CTA -->
+          <div class="checkout-actions">
+            <label for="modal-receipt" class="btn-primary-pay">
+              <span class="btn-main-text">Bayar &amp; Cetak Struk (F9)</span>
+              <span class="btn-sub-text">Thermal 58mm · QZ Tray + Buka Laci</span>
+            </label>
+            <label for="modal-hold" class="btn-secondary-hold" title="Tahan transaksi (F4)">
+              Hold (F4)
+            </label>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- ==================================================================
+       MODAL 1: PREVIEW & CETAK STRUK THERMAL 58MM (QZ TRAY)
+       ================================================================== -->
+  <div class="modal-backdrop modal-receipt" role="dialog" aria-modal="true" aria-labelledby="title-receipt">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-receipt">Preview Struk Thermal 58mm</h2>
+        <label for="modal-receipt" class="modal-close" aria-label="Tutup">&times;</label>
+      </div>
+      <div class="modal-body">
+        <div class="alert-box alert-box--success">
+          <strong>QZ Tray Terhubung:</strong> EPSON TM-T82 (58mm) · Cash drawer RJ11 otomatis terbuka setelah cetak.
+        </div>
+
+        <div class="receipt-paper">
+          <div class="receipt-center receipt-bold">NUSAPOS RETAIL — CAB01</div>
+          <div class="receipt-center">Jl. Sudirman No. 48, Jakarta Pusat</div>
+          <div class="receipt-center">Telp: (021) 555-0192</div>
+          <hr class="receipt-divider" />
+          <div class="receipt-line"><span>No:</span><span>INV/CAB01/20261123/0018</span></div>
+          <div class="receipt-line"><span>Tgl:</span><span>23/11/2026 09:42</span></div>
+          <div class="receipt-line"><span>Kasir:</span><span>Budi Santoso</span></div>
+          <hr class="receipt-divider" />
+
+          <div class="receipt-bold">Beras Pandan Wangi 5kg</div>
+          <div class="receipt-line"><span>1 x 74.000</span><span>74.000</span></div>
+
+          <div class="receipt-bold">Minyak Goreng Sawit 2L</div>
+          <div class="receipt-line"><span>2 x 34.000</span><span>68.000</span></div>
+          <div class="receipt-line"><span>  Diskon Item</span><span>-2.000</span></div>
+
+          <div class="receipt-bold">Air Mineral 600ml (Dus)</div>
+          <div class="receipt-line"><span>1 x 48.000</span><span>48.000</span></div>
+
+          <hr class="receipt-divider" />
+          <div class="receipt-line"><span>Subtotal</span><span>188.000</span></div>
+          <div class="receipt-line"><span>Diskon Trx</span><span>-8.000</span></div>
+          <div class="receipt-line"><span>PPN 11%</span><span>19.800</span></div>
+          <div class="receipt-line receipt-bold"><span>TOTAL</span><span>Rp 199.800</span></div>
+          <hr class="receipt-divider" />
+          <div class="receipt-line"><span>TUNAI</span><span>Rp 200.000</span></div>
+          <div class="receipt-line receipt-bold"><span>KEMBALI</span><span>Rp 200</span></div>
+          <hr class="receipt-divider" />
+          <div class="receipt-center">Terima kasih telah berbelanja!</div>
+          <div class="receipt-center">Barang yg dibeli tdk dpt dikembalikan</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <label for="modal-receipt" class="btn-modal">Tutup</label>
+        <label for="modal-receipt" class="btn-modal btn-modal--primary">Kirim ke QZ Tray &amp; Buka Laci</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       MODAL 2: TRANSAKSI HOLD (2)
+       ================================================================== -->
+  <div class="modal-backdrop modal-hold" role="dialog" aria-modal="true" aria-labelledby="title-hold">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-hold">Transaksi Ditahan (Hold)</h2>
+        <label for="modal-hold" class="modal-close" aria-label="Tutup">&times;</label>
+      </div>
+      <div class="modal-body">
+        <div class="hold-list">
+          <div class="hold-card">
+            <div class="hold-meta">
+              <strong>Ibu Rina Wijaya · 5 item</strong>
+              <span class="mono">HOLD-01 · 09:28 WIB · Rp 142.500</span>
+            </div>
+            <label for="modal-hold" class="btn-modal btn-modal--primary">Lanjutkan</label>
+          </div>
+          <div class="hold-card">
+            <div class="hold-meta">
+              <strong>Pelanggan Umum · 2 item</strong>
+              <span class="mono">HOLD-02 · 09:35 WIB · Rp 53.000</span>
+            </div>
+            <label for="modal-hold" class="btn-modal btn-modal--primary">Lanjutkan</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <label for="modal-hold" class="btn-modal">Tutup</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       MODAL 3: OTORISASI VOID / REFUND (PIN ADMIN)
+       ================================================================== -->
+  <div class="modal-backdrop modal-void" role="dialog" aria-modal="true" aria-labelledby="title-void">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-void">Otorisasi Void / Refund</h2>
+        <label for="modal-void" class="modal-close" aria-label="Tutup">&times;</label>
+      </div>
+      <div class="modal-body">
+        <div class="alert-box alert-box--danger">
+          Sesuai kebijakan hak akses, pembatalan (void) atau pengembalian dana (refund) memerlukan otorisasi <strong>Admin Cabang</strong> dan dicatat di <em>Activity Log</em>.
+        </div>
+        <div class="form-field">
+          <label for="void-inv">Nomor Transaksi</label>
+          <input id="void-inv" type="text" value="INV/CAB01/20261123/0017" class="mono" />
+        </div>
+        <div class="form-field">
+          <label for="admin-pin">PIN Otorisasi Admin</label>
+          <input id="admin-pin" type="password" placeholder="Masukkan 6 digit PIN Admin" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <label for="modal-void" class="btn-modal">Batal</label>
+        <label for="modal-void" class="btn-modal btn-modal--danger">Verifikasi &amp; Proses</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       MODAL 4: RINGKASAN SHIFT AKTIF (BUKA / TUTUP SHIFT)
+       ================================================================== -->
+  <div class="modal-backdrop modal-shift" role="dialog" aria-modal="true" aria-labelledby="title-shift">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="title-shift">Shift Kasir #04 — CAB01</h2>
+        <label for="modal-shift" class="modal-close" aria-label="Tutup">&times;</label>
+      </div>
+      <div class="modal-body">
+        <div class="shift-grid num">
+          <div class="shift-stat">
+            <span>Kasir &amp; Waktu Buka</span>
+            <strong>Budi · 08:00 WIB</strong>
+          </div>
+          <div class="shift-stat">
+            <span>Transaksi Selesai</span>
+            <strong>17 Transaksi</strong>
+          </div>
+          <div class="shift-stat">
+            <span>Modal Awal Laci</span>
+            <strong>Rp 500.000</strong>
+          </div>
+          <div class="shift-stat">
+            <span>Penjualan Tunai</span>
+            <strong>Rp 2.845.200</strong>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="actual-cash">Hitung Fisik Kas Laci Saat Tutup Shift (Rp)</label>
+          <input id="actual-cash" type="text" placeholder="Contoh: 3.345.200" class="num" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <label for="modal-shift" class="btn-modal">Kembali ke Kasir</label>
+        <label for="modal-shift" class="btn-modal btn-modal--primary">Tutup Shift &amp; Cetak Rekap</label>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
